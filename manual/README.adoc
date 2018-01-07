@@ -105,8 +105,22 @@ info endpoint is in Facebook:
 
 Note that with both these "static" data objects (`facebook()` and
 `facebookResource()`) we used a `@Bean` decorated as
-`@ConfigurationProperties`. That means that we can convert the
-`application.yml` to a slightly new format, where the prefix for
+`@ConfigurationProperties`. That means two things, we need set @Primary in 
+the `facebookResource()` to say to `UserInfoTokenServices` who is the primary 
+`@Bean` to be inject.
+
+.SocialApplication
+[source,java]
+----
+  @Bean
+  @Primary
+  @ConfigurationProperties("facebook.client")
+  public AuthorizationCodeResourceDetails facebook() {
+    return new AuthorizationCodeResourceDetails();
+  }
+----
+
+And we can change `application.yml` to a slightly new format, where the prefix for
 configuration is `facebook` instead of `security.oauth2`:
 
 .application.yml
